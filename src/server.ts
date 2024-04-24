@@ -25,6 +25,7 @@ app.use(cors({
 }));
 app.use(express.json());
 
+
 app.use('/api', foodRouter);
 app.use('/api/user', userRouter)
 
