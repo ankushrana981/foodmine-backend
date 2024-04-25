@@ -7,12 +7,16 @@ router.get('/foods', (req, res) => {
 
 });
 
-router.get('foods/:foodId', (req, res) => {
+router.get('/foods/:foodId', (req, res) => {
           const food = food_samples.find(food => food.id === req.params.foodId);
-          res.send(food);
+          console.log(food,"food")
+          if(!food){
+             return   res.status(404).send({message:"Food not found"});
+          }
+          return res.status(200).send(food)
 })
 
-router.get('foods/search/:searchTerm', (req, res) => {
+router.get('/foods/search/:searchTerm', (req, res) => {
           const food = food_samples.filter(food => food.name.toLowerCase().includes(req.params.searchTerm.toLowerCase()))
 
           if (food.length == 0) {
