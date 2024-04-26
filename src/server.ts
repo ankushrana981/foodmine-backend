@@ -21,7 +21,7 @@ mongoose.connect(process.env.MONGO_URI!).then(()=>{
 
 app.use(cors({
    credentials: true,
-   origin: ["http://localhost:4200"]
+   origin: ["https://foodmine-rouge.vercel.app/"]
 }));
 app.use(express.json());
 
