@@ -1,4 +1,4 @@
-import express from "express";
+import express, { urlencoded } from "express";
 const app = express();
 import cors from "cors";
 import mongoose from "mongoose";
@@ -19,11 +19,9 @@ mongoose.connect(process.env.MONGO_URI!).then(()=>{
    console.log(error, "Connectin Failed");
  });
 
-app.use(cors({
-   credentials: true,
-   origin: ["https://foodmine-rouge.vercel.app/"]
-}));
+app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended:false}))
 
 
 app.use('/api', foodRouter);
