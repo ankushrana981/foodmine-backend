@@ -6,6 +6,7 @@ export interface NewUser{
           password: string;
           confirmPassword: string;
           address: string;
+          token:string;
 }
 
 const NewUserSchema = new Schema<NewUser>({
@@ -13,7 +14,8 @@ const NewUserSchema = new Schema<NewUser>({
           email:{type:String, required:true},
           password:{type:String, required:true},
           confirmPassword:{type:String, required:true},
-          address:{type:String, required:true},       
+          address:{type:String, required:true},
+          token:{type:String, required:true}        
 },{
           timestamps:true,
           toJSON: {

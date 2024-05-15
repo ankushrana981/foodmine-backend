@@ -5,9 +5,10 @@ import mongoose from "mongoose";
 import env from "dotenv";
 import foodRouter from "./routers/food.router";
 import userRouter from "./routers/user.router";
+import orderRouter from "./routers/order.router";
 
 env.config();
-const port = 5000;
+const port = 8080;
 
 mongoose.connect(process.env.MONGO_URI!).then(()=>{
    console.log(process.env.MONGO_URI)
@@ -25,7 +26,8 @@ app.use(express.urlencoded({ extended:false}))
 
 
 app.use('/api', foodRouter);
-app.use('/api/user', userRouter)
+app.use('/api/user', userRouter);
+app.use('/api/orders', orderRouter);
 
 
 
