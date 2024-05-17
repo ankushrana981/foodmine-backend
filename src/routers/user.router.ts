@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import jwt from 'jsonwebtoken';
-import { UserModel } from '../modals/user.modal';
+import { NewUser, UserModel } from '../modals/user.modal';
 import bcrypt from 'bcrypt';
 
 const router = Router();
@@ -18,9 +18,8 @@ router.post('/login', async (req, res) => {
          if(!isMatch){
            return res.status(404).json({message:"Invalid password"});
          }
-         const token = jwt.sign(req.body, process.env.SECREAT_KEY!, { expiresIn: "30d" })
-         user.token = token;
-         return res.status(200).send({ data: user, message: "Login Succesfully" });
+        
+         return res.status(200).send(generateTokenResponse(user));
       })
 
    } catch (error) {
@@ -29,7 +28,7 @@ router.post('/login', async (req, res) => {
    }
 })
 router.post('/register', async (req, res) => {
-   const { password, email } = req.body;
+   const {email, password} = req.body;
    try {
       const user = await UserModel.findOne({ email })
       if (user) return res.status(400).send("User Already Registered , Please login!")
@@ -39,13 +38,10 @@ router.post('/register', async (req, res) => {
          if (hashedPassword) {
             console.log("Hashed Password", hashedPassword)
             try {
-               const NewUser = await UserModel.create(
-                  {
-                     ...req.body,
-                     password: hashedPassword
-                  }
-               )
-               res.status(200).json({data:NewUser, message: "User created successfully" })
+               const dbUser = await UserModel.create({
+                  ...req.body, password: hashedPassword, isAdmin: false
+               })
+               res.status(200).json(generateTokenResponse(dbUser))
             } catch (error) {
                res.status(500).json({ message: error });
             }
@@ -55,5 +51,17 @@ router.post('/register', async (req, res) => {
       res.status(500).json({ message: error });
    }
 })
+
+const generateTokenResponse = (user:NewUser)=>{
+ const token = jwt.sign({id: user.id, email:user.email, isAdmin: user.isAdmin}, process.env.SECREAT_KEY!, { expiresIn: "30d" })
+ return {
+   id: user.id,
+   email: user.email,
+   name: user.name,
+   address: user.address,
+   isAdmin: user.isAdmin,
+   token: token
+ };
+}
 
 export default router

@@ -1,12 +1,14 @@
 import { Schema, model } from "mongoose";
 
 export interface NewUser{
+          id:string;
           name: string;
           email: string;
           password: string;
           confirmPassword: string;
           address: string;
           token:string;
+          isAdmin:boolean;
 }
 
 const NewUserSchema = new Schema<NewUser>({
@@ -15,7 +17,8 @@ const NewUserSchema = new Schema<NewUser>({
           password:{type:String, required:true},
           confirmPassword:{type:String, required:true},
           address:{type:String, required:true},
-          token:{type:String, required:true}        
+          isAdmin: {type: Boolean, required: true},
+          token:{type:String}        
 },{
           timestamps:true,
           toJSON: {

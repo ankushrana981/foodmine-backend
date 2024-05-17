@@ -14,13 +14,13 @@ export const LatLngSchema = new Schema<LatLng>({
 
 export interface OrderItem{
           food:Food;
-          totalPrice:number;
+          price:number;
           quantity:number;
 }
 
 export const orderItemSchema = new Schema<OrderItem>({
           food:{type:foodSchema, required:true},
-          totalPrice:{type:Number, required:true},
+          price:{type:Number, required:true},
           quantity:{type:Number, required:true}
 
 })
@@ -42,12 +42,12 @@ export interface Order {
 
 export const OrderSchema = new Schema<Order>({
           name:{type:String, required:true},
-          items:{type:[orderItemSchema], required:true},
+          items:{type: [orderItemSchema], required:true},
           totalPrice:{type:Number, required:true},
           address:{type:String, required:true},
           addressLatLng:{type:LatLngSchema, required:true},
-          paymentId:{type:String, required:true},
-          user:{type:Schema.Types.ObjectId, required:true},
+          paymentId:{type:String},
+          user:{type:Schema.Types.ObjectId},
           status:{type:String,default:OrderStatus.NEW, required:true},
 },{
           timestamps: true,
